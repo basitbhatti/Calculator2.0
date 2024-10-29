@@ -3,6 +3,7 @@ package com.portfolioapps.calculator2
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -32,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import com.portfolioapps.calculator2.ui.theme.Calculator2Theme
 
 class MainActivity : ComponentActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +81,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             contentAlignment = Alignment.BottomCenter
         ) {
 
-            Column (
+            Column(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Box(
@@ -92,12 +93,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 )
             }
 
-
-
         }
-
-
-
 
         Box(
             modifier = Modifier
@@ -126,7 +122,41 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonGray(text = "")
+                        ButtonSignGray(text = "C")
+
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Box(
+                            modifier = modifier
+                                .clip(
+                                    RoundedCornerShape(12.dp)
+                                )
+                                .size(60.dp)
+                                .background(MaterialTheme.colorScheme.secondary),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_backspace),
+                                modifier = Modifier.size(24.dp),
+                                contentDescription = "backspace"
+                            )
+                        }
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight(),
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        ButtonSignGray(text = "/")
 
                     }
 
@@ -137,29 +167,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonGray(text = "")
-
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight(),
-                        contentAlignment = Alignment.Center
-                    ) {
-
-                        ButtonGray(text = "")
-
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight(),
-                        contentAlignment = Alignment.Center
-                    ) {
-
-                        ButtonGray(text = "")
+                        ButtonSignGray(text = "x")
 
                     }
                 }
@@ -212,7 +220,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonGray(text = "")
+                        ButtonSignGray(text = "-")
 
                     }
                 }
@@ -230,9 +238,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                             .fillMaxHeight(),
                         contentAlignment = Alignment.Center
                     ) {
-
                         ButtonGray(text = "4")
-
                     }
 
                     Box(
@@ -241,9 +247,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                             .fillMaxHeight(),
                         contentAlignment = Alignment.Center
                     ) {
-
                         ButtonGray(text = "5")
-
                     }
 
                     Box(
@@ -252,9 +256,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                             .fillMaxHeight(),
                         contentAlignment = Alignment.Center
                     ) {
-
                         ButtonGray(text = "6")
-
                     }
 
                     Box(
@@ -264,11 +266,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonGray(text = "")
+                        ButtonSignGray(text = "+")
 
                     }
                 }
-
 
                 Row(
                     modifier = Modifier
@@ -288,8 +289,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                 .fillMaxHeight()
                                 .weight(0.5f)
                         ) {
-
-
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
@@ -318,13 +317,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                     .fillMaxHeight(),
                                 contentAlignment = Alignment.Center
                             ) {
-
                                 ButtonGray(text = "3")
-
                             }
-
                         }
-
 
                         Row(
                             modifier = Modifier
@@ -333,14 +328,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                 .weight(0.5f),
                         ) {
 
-
                             Box(
                                 modifier = Modifier
                                     .weight(2f)
                                     .fillMaxHeight(),
                                 contentAlignment = Alignment.Center
                             ) {
-
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()
@@ -361,14 +354,15 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                         }) {
                                         Text(
                                             text = "0",
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .padding(start = 15.dp),
                                             fontSize = 30.sp,
                                             color = MaterialTheme.colorScheme.tertiary
                                         )
                                     }
                                 }
-
                             }
-
 
                             Box(
                                 modifier = Modifier
@@ -378,11 +372,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                             ) {
 
                                 ButtonGray(text = ".")
-
                             }
-
                         }
-
                     }
 
                     Box(
@@ -399,10 +390,16 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                 .padding(vertical = 15.dp)
                                 .clip(RoundedCornerShape(12.dp))
                                 .background(MaterialTheme.colorScheme.primary),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.BottomCenter
                         ) {
-
-                            Text(text = "=", fontSize = 30.sp, color = Color.White)
+                            Text(
+                                text = "=",
+                                fontSize = 40.sp,
+                                fontFamily = fontFamily,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.White,
+                                modifier = Modifier.padding(bottom = 5.dp)
+                            )
                         }
 
                     }
@@ -431,7 +428,38 @@ fun ButtonGray(modifier: Modifier = Modifier, text: String) {
 
             }
         ) {
-            Text(text = text, fontSize = 30.sp, color = MaterialTheme.colorScheme.tertiary)
+            Text(
+                text = text,
+                fontSize = 30.sp,
+                fontFamily = FontFamily(Font(resId = R.font.regular)),
+                color = MaterialTheme.colorScheme.tertiary
+            )
+        }
+    }
+}
+
+@Composable
+fun ButtonSignGray(modifier: Modifier = Modifier, text: String) {
+    Box(
+        modifier = modifier
+            .clip(
+                RoundedCornerShape(12.dp)
+            )
+            .size(60.dp)
+            .background(MaterialTheme.colorScheme.secondary),
+        contentAlignment = Alignment.Center
+    ) {
+        TextButton(modifier = Modifier.fillMaxSize(), shape = RoundedCornerShape(12.dp),
+            onClick = {
+
+            }
+        ) {
+            Text(
+                text = text,
+                fontSize = 30.sp,
+                fontFamily = FontFamily(Font(resId = R.font.regular)),
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }
