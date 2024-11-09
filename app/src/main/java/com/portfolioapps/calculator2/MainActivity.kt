@@ -3,8 +3,10 @@ package com.portfolioapps.calculator2
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +22,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +37,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.portfolioapps.calculator2.ui.theme.Calculator2Theme
+import com.portfolioapps.calculator2.utils.CalculatorAction
+import com.portfolioapps.calculator2.utils.CalculatorOperation
+import com.portfolioapps.calculator2.utils.CalculatorState
+import com.portfolioapps.calculator2.viewmodel.CalculatorViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -39,7 +48,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Calculator2Theme {
-                HomeScreen()
+                val viewModel by viewModels<CalculatorViewModel>()
+                val state = viewModel.state
+                HomeScreen(state = state, viewModel::onAction)
             }
         }
     }
@@ -51,12 +62,18 @@ class MainActivity : ComponentActivity() {
 fun GreetingPreview() {
     Calculator2Theme {
 //        ButtonGray(text = 9)
-        HomeScreen()
+//        HomeScreen(CalculatorState())
     }
 }
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(state: CalculatorState,
+               onAction : (CalculatorAction) -> Unit,
+               modifier: Modifier = Modifier) {
+
+    val fontSize by remember {
+        mutableStateOf(30.sp)
+    }
 
     val fontFamily = FontFamily(
         listOf(
@@ -84,6 +101,27 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             Column(
                 modifier = modifier.fillMaxWidth()
             ) {
+
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
+                    Text(
+                        text = state.number1 + (state.operation ?: "") + state.number2,
+                        fontFamily = fontFamily,
+                        fontSize = 50.sp,
+                        color = Color.Black,
+                        modifier = Modifier.padding(end = 20.dp)
+                    )
+                }
+
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
+                    Text(
+                        text = "= 225,000",
+                        fontFamily = fontFamily,
+                        fontSize = fontSize,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier.padding(end = 20.dp)
+                    )
+                }
+
                 Box(
                     modifier = modifier
                         .fillMaxWidth()
@@ -92,8 +130,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         .background(MaterialTheme.colorScheme.tertiary)
                 )
             }
-
         }
+
+        //TODO ---------------------------------- (SCREEN INTERVAL) -----------------------------
 
         Box(
             modifier = Modifier
@@ -122,7 +161,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonSignGray(text = "C")
+                        ButtonSignGray(text = "C", onClick = {
+                            onAction(CalculatorAction.Clear)
+                        })
 
                     }
 
@@ -134,6 +175,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     ) {
                         Box(
                             modifier = modifier
+                                .clickable {
+                                    onAction(CalculatorAction.Delete)
+                                }
                                 .clip(
                                     RoundedCornerShape(12.dp)
                                 )
@@ -156,7 +200,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonSignGray(text = "/")
+                        ButtonSignGray(text = "/", onClick = {
+                            onAction(CalculatorAction.Operation(CalculatorOperation.Divide))
+
+                        })
 
                     }
 
@@ -167,7 +214,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonSignGray(text = "x")
+                        ButtonSignGray(text = "x", onClick = {
+                            onAction(CalculatorAction.Operation(CalculatorOperation.Multiply))
+                        })
 
                     }
                 }
@@ -187,7 +236,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonGray(text = "7")
+                        ButtonGray(text = "7", onClick = {
+                            onAction(CalculatorAction.Number(7))
+
+                        })
 
                     }
 
@@ -198,7 +250,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonGray(text = "8")
+                        ButtonGray(text = "8", onClick = {
+                            onAction(CalculatorAction.Number(8))
+
+                        })
 
                     }
 
@@ -209,7 +264,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonGray(text = "9")
+                        ButtonGray(text = "9", onClick = {
+                            onAction(CalculatorAction.Number(9))
+                        })
 
                     }
 
@@ -220,7 +277,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonSignGray(text = "-")
+                        ButtonSignGray(text = "-", onClick = {
+                            onAction(CalculatorAction.Operation(CalculatorOperation.Subtract))
+
+                        })
 
                     }
                 }
@@ -238,7 +298,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                             .fillMaxHeight(),
                         contentAlignment = Alignment.Center
                     ) {
-                        ButtonGray(text = "4")
+                        ButtonGray(text = "4", onClick = {
+                            onAction(CalculatorAction.Number(4))
+
+                        })
                     }
 
                     Box(
@@ -247,7 +310,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                             .fillMaxHeight(),
                         contentAlignment = Alignment.Center
                     ) {
-                        ButtonGray(text = "5")
+                        ButtonGray(text = "5", onClick = {
+                            onAction(CalculatorAction.Number(5))
+
+                        })
                     }
 
                     Box(
@@ -256,7 +322,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                             .fillMaxHeight(),
                         contentAlignment = Alignment.Center
                     ) {
-                        ButtonGray(text = "6")
+                        ButtonGray(text = "6", onClick = {
+                            onAction(CalculatorAction.Number(6))
+
+                        })
                     }
 
                     Box(
@@ -266,7 +335,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
 
-                        ButtonSignGray(text = "+")
+                        ButtonSignGray(text = "+", onClick = {
+                            onAction(CalculatorAction.Operation(CalculatorOperation.Add))
+                        })
 
                     }
                 }
@@ -296,7 +367,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                 contentAlignment = Alignment.Center
                             ) {
 
-                                ButtonGray(text = "1")
+                                ButtonGray(text = "1", onClick = {
+                                    onAction(CalculatorAction.Number(1))
+                                })
 
                             }
 
@@ -307,8 +380,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                 contentAlignment = Alignment.Center
                             ) {
 
-                                ButtonGray(text = "2")
-
+                                ButtonGray(text = "2", onClick = {
+                                    onAction(CalculatorAction.Number(2))
+                                })
                             }
 
                             Box(
@@ -317,7 +391,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                     .fillMaxHeight(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                ButtonGray(text = "3")
+                                ButtonGray(text = "3", onClick = {
+                                    onAction(CalculatorAction.Number(3))
+                                })
                             }
                         }
 
@@ -338,19 +414,16 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .padding(
-                                            start = 15.dp,
-                                            end = 15.dp,
-                                            top = 15.dp,
-                                            bottom = 15.dp
+                                            start = 15.dp, end = 15.dp, top = 15.dp, bottom = 15.dp
                                         )
                                         .clip(RoundedCornerShape(12.dp))
                                         .background(MaterialTheme.colorScheme.secondary),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    TextButton(
-                                        modifier = Modifier.fillMaxSize(),
+                                    TextButton(modifier = Modifier.fillMaxSize(),
                                         shape = RoundedCornerShape(12.dp),
                                         onClick = {
+                                            onAction(CalculatorAction.Number(0))
                                         }) {
                                         Text(
                                             text = "0",
@@ -370,14 +443,18 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                     .fillMaxHeight(),
                                 contentAlignment = Alignment.Center
                             ) {
-
-                                ButtonGray(text = ".")
+                                ButtonGray(text = ".", onClick = {
+                                    onAction(CalculatorAction.Decimal)
+                                })
                             }
                         }
                     }
 
                     Box(
                         modifier = Modifier
+                            .clickable {
+                                onAction(CalculatorAction.Calculate)
+                            }
                             .weight(0.25f)
                             .height(180.dp),
                         contentAlignment = Alignment.Center
@@ -413,7 +490,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ButtonGray(modifier: Modifier = Modifier, text: String) {
+fun ButtonGray(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
     Box(
         modifier = modifier
             .clip(
@@ -425,9 +502,8 @@ fun ButtonGray(modifier: Modifier = Modifier, text: String) {
     ) {
         TextButton(modifier = Modifier.fillMaxSize(), shape = RoundedCornerShape(12.dp),
             onClick = {
-
-            }
-        ) {
+                onClick()
+            }) {
             Text(
                 text = text,
                 fontSize = 30.sp,
@@ -439,7 +515,7 @@ fun ButtonGray(modifier: Modifier = Modifier, text: String) {
 }
 
 @Composable
-fun ButtonSignGray(modifier: Modifier = Modifier, text: String) {
+fun ButtonSignGray(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
     Box(
         modifier = modifier
             .clip(
@@ -451,7 +527,7 @@ fun ButtonSignGray(modifier: Modifier = Modifier, text: String) {
     ) {
         TextButton(modifier = Modifier.fillMaxSize(), shape = RoundedCornerShape(12.dp),
             onClick = {
-
+                onClick()
             }
         ) {
             Text(
