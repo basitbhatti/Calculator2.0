@@ -14,7 +14,6 @@ class CalculatorViewModel : ViewModel() {
         private set
 
     fun onAction(action: CalculatorAction) {
-
         when (action) {
             is CalculatorAction.Number -> enterNumber(action.number)
             is CalculatorAction.Delete -> deleteNumber()
@@ -34,7 +33,17 @@ class CalculatorViewModel : ViewModel() {
     }
 
     private fun performCalculation() {
-
+        val number1 = state.number1.toDoubleOrNull()
+        val number2 = state.number1.toDoubleOrNull()
+        if (number1 != null && number2 != null){
+            state = state.copy( result = when (state.operation){
+                is CalculatorOperation.Add -> number1 + number2
+                is CalculatorOperation.Subtract -> number1 - number2
+                is CalculatorOperation.Multiply -> number1 * number2
+                is CalculatorOperation.Divide -> number1 / number2
+                null -> return
+            })
+        }
     }
 
     private fun enterDecimal() {
@@ -63,7 +72,7 @@ class CalculatorViewModel : ViewModel() {
             )
 
             state.number1.isNotBlank() -> state = state.copy(
-                number2 = state.number1.dropLast(1)
+                number1 = state.number1.dropLast(1)
             )
         }
     }
@@ -73,7 +82,6 @@ class CalculatorViewModel : ViewModel() {
             if (state.number1.length >= MAX_LENGTH){
                 return
             }
-
             state = state.copy(
                 number1 = state.number1 + number
             )
@@ -81,7 +89,6 @@ class CalculatorViewModel : ViewModel() {
             if (state.number2.length >= MAX_LENGTH){
                 return
             }
-
             state = state.copy(
                 number2 = state.number2 + number
             )

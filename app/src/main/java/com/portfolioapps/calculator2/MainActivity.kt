@@ -104,7 +104,7 @@ fun HomeScreen(state: CalculatorState,
 
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
                     Text(
-                        text = state.number1 + (state.operation ?: "") + state.number2,
+                        text = state.number1 + (state.operation?.symbol ?: "") + state.number2,
                         fontFamily = fontFamily,
                         fontSize = 50.sp,
                         color = Color.Black,
@@ -113,13 +113,24 @@ fun HomeScreen(state: CalculatorState,
                 }
 
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
-                    Text(
-                        text = "= 225,000",
-                        fontFamily = fontFamily,
-                        fontSize = fontSize,
-                        color = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.padding(end = 20.dp)
-                    )
+                    if (state.result == 0.0){
+                        Text(
+                            text = "",
+                            fontFamily = fontFamily,
+                            fontSize = fontSize,
+                            color = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.padding(end = 20.dp)
+                        )
+                    } else {
+                        Text(
+                            text = state.result.toString(),
+                            fontFamily = fontFamily,
+                            fontSize = fontSize,
+                            color = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.padding(end = 20.dp)
+                        )
+                    }
+
                 }
 
                 Box(
@@ -452,9 +463,6 @@ fun HomeScreen(state: CalculatorState,
 
                     Box(
                         modifier = Modifier
-                            .clickable {
-                                onAction(CalculatorAction.Calculate)
-                            }
                             .weight(0.25f)
                             .height(180.dp),
                         contentAlignment = Alignment.Center
@@ -464,6 +472,9 @@ fun HomeScreen(state: CalculatorState,
                             modifier = Modifier
                                 .fillMaxHeight()
                                 .width(62.dp)
+                                .clickable {
+                                    onAction(CalculatorAction.Calculate)
+                                }
                                 .padding(vertical = 15.dp)
                                 .clip(RoundedCornerShape(12.dp))
                                 .background(MaterialTheme.colorScheme.primary),
