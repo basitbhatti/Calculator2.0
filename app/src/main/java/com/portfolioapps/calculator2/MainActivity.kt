@@ -112,26 +112,26 @@ fun HomeScreen(state: CalculatorState,
                     )
                 }
 
-                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
-                    if (state.result == 0.0){
-                        Text(
-                            text = "",
-                            fontFamily = fontFamily,
-                            fontSize = fontSize,
-                            color = MaterialTheme.colorScheme.tertiary,
-                            modifier = Modifier.padding(end = 20.dp)
-                        )
-                    } else {
-                        Text(
-                            text = state.result.toString(),
-                            fontFamily = fontFamily,
-                            fontSize = fontSize,
-                            color = MaterialTheme.colorScheme.tertiary,
-                            modifier = Modifier.padding(end = 20.dp)
-                        )
-                    }
-
-                }
+//                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
+//                    if (state.result == 0.0){
+//                        Text(
+//                            text = "",
+//                            fontFamily = fontFamily,
+//                            fontSize = fontSize,
+//                            color = MaterialTheme.colorScheme.tertiary,
+//                            modifier = Modifier.padding(end = 20.dp)
+//                        )
+//                    } else {
+//                        Text(
+//                            text = state.number1,
+//                            fontFamily = fontFamily,
+//                            fontSize = fontSize,
+//                            color = MaterialTheme.colorScheme.tertiary,
+//                            modifier = Modifier.padding(end = 20.dp)
+//                        )
+//                    }
+//
+//                }
 
                 Box(
                     modifier = modifier
